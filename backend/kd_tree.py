@@ -45,11 +45,11 @@ class KDTree(object):
                 elif dist_sq < -heap[0][0]:
                     heapq.heappushpop(heap, (-dist_sq, tiebreaker, node[2]))
                                 
-                # Goes into the left branch, then the right branch if needed
+                # Breaks ties with same distance by using the unique binary number (tiebreaker)
                 for b in (dx < 0, dx >= 0)[:1 + (dx * dx < -heap[0][0])]:
                     get_knn(node[b], point, k, return_dist_sq, heap, i, (tiebreaker << 1) | b)
             
-            # Breaks ties with same distance by using the unique binary number (tiebreaker)
+            # Return neighbours, when we come back to initial recursive call
             if tiebreaker == 1:
                 return [(-h[0], h[2]) if return_dist_sq else h[2] for h in sorted(heap)][::-1]
 
